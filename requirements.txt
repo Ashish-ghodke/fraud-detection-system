@@ -1,0 +1,31 @@
+# Credit Card Fraud Detection System - Dependencies
+# ================================================
+# This file contains all required Python packages for the project
+# Install with: pip install -r requirements.txt
+
+# Core Data Processing
+pandas>=1.5.0
+numpy>=1.23.0
+openpyxl>=3.0.0
+xlrd>=2.0.1
+
+# Machine Learning
+scikit-learn>=1.2.0
+xgboost>=1.7.0
+imbalanced-learn>=0.10.0
+
+# Model Serialization
+joblib>=1.2.0
+
+# Streamlit Web Framework
+streamlit>=1.24.0
+
+# Data Visualization
+plotly>=5.14.0
+matplotlib>=3.6.0
+
+# Utilities
+python-dateutil>=2.8.0
+
+# Note: For Streamlit Cloud deployment, these versions are compatible
+# and have been tested for production use
