@@ -9,6 +9,10 @@ import os
 import sys
 import importlib
 
+# Add current directory to path
+current_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, current_dir)
+
 # Dynamic import helper
 def dynamic_import(module_name, class_name):
     """Dynamically import a module and class."""
@@ -16,7 +20,7 @@ def dynamic_import(module_name, class_name):
         module = importlib.import_module(module_name)
         return getattr(module, class_name)
     except (ImportError, AttributeError) as e:
-        st.error(f"Import error: {module_name}.{class_name} - {str(e)}")
+        st.error(f"Import error: {module_name}.{class_name}")
         return None
 
 # Page Configuration
@@ -142,7 +146,7 @@ def show_upload_page():
 def analyze_file(uploaded_file):
     with st.spinner("Processing..."):
         try:
-            # Import required classes with fraud_detection_system prefix
+            # Import required classes
             DataPreprocessor = dynamic_import('fraud_detection_system.ml_pipeline.data_preprocessing', 'DataPreprocessor')
             FeatureEngineer = dynamic_import('fraud_detection_system.ml_pipeline.feature_engineering', 'FeatureEngineer')
             ModelTrainer = dynamic_import('fraud_detection_system.ml_pipeline.model_training', 'ModelTrainer')
