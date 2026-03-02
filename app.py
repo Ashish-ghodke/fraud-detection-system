@@ -21,15 +21,18 @@ import sys
 from typing import Dict, Optional
 
 # Add parent directory to path for imports
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+app_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.dirname(app_dir)
+sys.path.insert(0, project_root)
+sys.path.insert(0, app_dir)
 
-from ml_pipeline.data_preprocessing import DataPreprocessor
-from ml_pipeline.feature_engineering import FeatureEngineer
-from ml_pipeline.model_training import ModelTrainer
-from ml_pipeline.prediction_pipeline import PredictionPipeline
-from utils.file_handler import FileHandler, load_sample_data
-from utils.chart_generator import ChartGenerator
-from utils.constants import (
+from fraud_detection_system.ml_pipeline.data_preprocessing import DataPreprocessor
+from fraud_detection_system.ml_pipeline.feature_engineering import FeatureEngineer
+from fraud_detection_system.ml_pipeline.model_training import ModelTrainer
+from fraud_detection_system.ml_pipeline.prediction_pipeline import PredictionPipeline
+from fraud_detection_system.utils.file_handler import FileHandler, load_sample_data
+from fraud_detection_system.utils.chart_generator import ChartGenerator
+from fraud_detection_system.utils.constants import (
     APP_NAME, APP_VERSION, APP_DESCRIPTION,
     MSG_ANALYSIS_COMPLETE, BTN_VIEW_DASHBOARD, BTN_DOWNLOAD_RESULTS, BTN_RE_UPLOAD
 )
