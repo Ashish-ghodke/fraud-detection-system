@@ -49,7 +49,7 @@ for key, default in {
 
 # Initialize file handler
 if st.session_state.file_handler is None:
-    FileHandler = dynamic_import('utils.file_handler', 'FileHandler')
+    FileHandler = dynamic_import('fraud_detection_system.utils.file_handler', 'FileHandler')
     if FileHandler:
         st.session_state.file_handler = FileHandler()
 
@@ -109,7 +109,7 @@ def show_home_page():
     st.header("🧪 Try with Sample Data")
     if st.button("Load Sample Data"):
         with st.spinner("Loading..."):
-            load_sample_data = dynamic_import('utils.file_handler', 'load_sample_data')
+            load_sample_data = dynamic_import('fraud_detection_system.utils.file_handler', 'load_sample_data')
             if load_sample_data:
                 sample_df = load_sample_data()
                 st.session_state.processed_data = sample_df
@@ -142,10 +142,10 @@ def show_upload_page():
 def analyze_file(uploaded_file):
     with st.spinner("Processing..."):
         try:
-            # Import required classes
-            DataPreprocessor = dynamic_import('ml_pipeline.data_preprocessing', 'DataPreprocessor')
-            FeatureEngineer = dynamic_import('ml_pipeline.feature_engineering', 'FeatureEngineer')
-            ModelTrainer = dynamic_import('ml_pipeline.model_training', 'ModelTrainer')
+            # Import required classes with fraud_detection_system prefix
+            DataPreprocessor = dynamic_import('fraud_detection_system.ml_pipeline.data_preprocessing', 'DataPreprocessor')
+            FeatureEngineer = dynamic_import('fraud_detection_system.ml_pipeline.feature_engineering', 'FeatureEngineer')
+            ModelTrainer = dynamic_import('fraud_detection_system.ml_pipeline.model_training', 'ModelTrainer')
             
             if not all([DataPreprocessor, FeatureEngineer, ModelTrainer]):
                 st.error("Failed to load ML modules")
@@ -274,7 +274,7 @@ def show_dashboard():
     c4.metric("Safe", f"{s['normal_transactions']:,}")
     
     st.markdown("---")
-    ChartGenerator = dynamic_import('utils.chart_generator', 'ChartGenerator')
+    ChartGenerator = dynamic_import('fraud_detection_system.utils.chart_generator', 'ChartGenerator')
     
     if ChartGenerator:
         chart_gen = ChartGenerator()
