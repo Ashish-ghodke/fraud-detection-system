@@ -7,21 +7,23 @@ import pandas as pd
 import numpy as np
 import os
 import sys
-import importlib
 
 # Add current directory to path
 current_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, current_dir)
+if current_dir not in sys.path:
+    sys.path.insert(0, current_dir)
 
-# Dynamic import helper
-def dynamic_import(module_name, class_name):
-    """Dynamically import a module and class."""
-    try:
-        module = importlib.import_module(module_name)
-        return getattr(module, class_name)
-    except (ImportError, AttributeError) as e:
-        st.error(f"Import error: {module_name}.{class_name}")
-        return None
+# Direct imports - all files are in root
+try:
+    from data_preprocessing import DataPreprocessor
+    from feature_engineering import FeatureEngineer
+    from model_training import ModelTrainer
+    from file_handler import FileHandler, load_sample_data
+    from chart_generator import ChartGenerator
+    IMPORTS_OK = True
+except ImportError as e:
+    IMPORTS_OK = False
+    IMPORT_ERROR = str(e)
 
 # Page Configuration
 st.set_page_config(
@@ -52,10 +54,8 @@ for key, default in {
         st.session_state[key] = default
 
 # Initialize file handler
-if st.session_state.file_handler is None:
-    FileHandler = dynamic_import('fraud_detection_system.utils.file_handler', 'FileHandler')
-    if FileHandler:
-        st.session_state.file_handler = FileHandler()
+if st.session_state.file_handler is None and IMPORTS_OK:
+    st.session_state.file_handler = FileHandler()
 
 # Constants
 APP_NAME = "Credit Card Fraud Detection System"
@@ -70,29 +70,28 @@ def show_home_page():
     st.markdown(f"**Version {APP_VERSION}**")
     st.markdown("---")
     
+    if not IMPORTS_OK:
+        st.error(f"Import Error: {IMPORT_ERROR}")
+        return
+    
     st.header("📋 Project Introduction")
     st.markdown("""
-    This is a **production-level Credit Card Fraud Detection System** built using XGBoost, 
-    one of the most powerful machine learning algorithms for classification tasks.
+    This is a **production-level Credit Card Fraud Detection System** built using XGBoost.
     """)
     
     st.markdown("---")
     st.header("🤖 Why XGBoost?")
     st.markdown("""
-    **XGBoost (eXtreme Gradient Boosting)** is chosen because:
-    1. **Handles Imbalanced Data**: Built-in scale_pos_weight parameter handles class imbalance.
-    2. **High Performance**: Known for speed and accuracy.
-    3. **Regularization**: L1 and L2 prevent overfitting.
+    1. **Handles Imbalanced Data**: Built-in scale_pos_weight handles class imbalance.
+    2. **High Performance**: Fast and accurate.
+    3. **Regularization**: Prevents overfitting.
     4. **Missing Values**: Native handling.
-    5. **Feature Importance**: Clear feature importance scores.
     """)
     
     st.header("⚖️ Why SMOTE?")
-    st.markdown("""
-    **SMOTE (Synthetic Minority Oversampling Technique)** creates synthetic minority samples to handle imbalanced data.
-    """)
+    st.markdown("SMOTE creates synthetic minority samples to handle imbalanced data.")
     
-    st.header("📊 Dataset Format Requirements")
+    st.header("📊 Dataset Format")
     st.markdown("""
     | Column | Description |
     |--------|-------------|
@@ -102,19 +101,11 @@ def show_home_page():
     | Class | Target (1=Fraud, 0=Normal) |
     """)
     
-    st.header("⚠️ Precautions")
-    st.markdown("""
-    1. File Format: CSV or Excel only
-    2. File Size: Max 50MB
-    3. Required: Amount column
-    """)
-    
     st.markdown("---")
     st.header("🧪 Try with Sample Data")
     if st.button("Load Sample Data"):
         with st.spinner("Loading..."):
-            load_sample_data = dynamic_import('fraud_detection_system.utils.file_handler', 'load_sample_data')
-            if load_sample_data:
+            try:
                 sample_df = load_sample_data()
                 st.session_state.processed_data = sample_df
                 st.session_state.analysis_complete = True
@@ -128,9 +119,15 @@ def show_home_page():
                 }
                 st.success("Sample data loaded!")
                 st.rerun()
+            except Exception as e:
+                st.error(f"Error loading sample: {str(e)}")
 
 
 def show_upload_page():
+    if not IMPORTS_OK:
+        st.error(f"Import Error: {IMPORT_ERROR}")
+        return
+        
     st.title("📤 Upload & Analyze")
     uploaded_file = st.file_uploader("Choose CSV or Excel file", type=['csv', 'xlsx', 'xls'])
     
@@ -144,17 +141,12 @@ def show_upload_page():
 
 
 def analyze_file(uploaded_file):
+    if not IMPORTS_OK:
+        st.error(f"Import Error: {IMPORT_ERROR}")
+        return
+    
     with st.spinner("Processing..."):
         try:
-            # Import required classes
-            DataPreprocessor = dynamic_import('fraud_detection_system.ml_pipeline.data_preprocessing', 'DataPreprocessor')
-            FeatureEngineer = dynamic_import('fraud_detection_system.ml_pipeline.feature_engineering', 'FeatureEngineer')
-            ModelTrainer = dynamic_import('fraud_detection_system.ml_pipeline.model_training', 'ModelTrainer')
-            
-            if not all([DataPreprocessor, FeatureEngineer, ModelTrainer]):
-                st.error("Failed to load ML modules")
-                return
-            
             # Read file
             file_handler = st.session_state.file_handler
             df, error = file_handler.read_file(uploaded_file)
@@ -170,7 +162,7 @@ def analyze_file(uploaded_file):
             df_processed, report = preprocessor.preprocess(df)
             
             if not report.get('validation_passed'):
-                st.error(f"Validation failed")
+                st.error(f"Validation failed: {report.get('validation_errors', ['Unknown error'])}")
                 return
             
             # Feature engineering
@@ -257,6 +249,10 @@ def show_analysis_results():
 
 
 def show_dashboard():
+    if not IMPORTS_OK:
+        st.error(f"Import Error: {IMPORT_ERROR}")
+        return
+    
     st.title("📊 Dashboard")
     if st.button("← Back"):
         st.session_state.current_page = "upload"
@@ -278,27 +274,24 @@ def show_dashboard():
     c4.metric("Safe", f"{s['normal_transactions']:,}")
     
     st.markdown("---")
-    ChartGenerator = dynamic_import('fraud_detection_system.utils.chart_generator', 'ChartGenerator')
+    chart_gen = ChartGenerator()
+    st.header("📉 Fraud Distribution")
+    c1, c2 = st.columns(2)
+    with c1:
+        st.plotly_chart(chart_gen.create_bar_chart(df, "Types"), use_container_width=True)
+    with c2:
+        st.plotly_chart(chart_gen.create_pie_chart(df, "Distribution"), use_container_width=True)
     
-    if ChartGenerator:
-        chart_gen = ChartGenerator()
-        st.header("📉 Fraud Distribution")
-        c1, c2 = st.columns(2)
-        with c1:
-            st.plotly_chart(chart_gen.create_bar_chart(df, "Types"), use_container_width=True)
-        with c2:
-            st.plotly_chart(chart_gen.create_pie_chart(df, "Distribution"), use_container_width=True)
-        
-        st.markdown("---")
-        st.header("💰 Amount Distribution")
-        if 'Amount' in df.columns:
-            st.plotly_chart(chart_gen.create_histogram(df, 'Amount', "Amount"), use_container_width=True)
-        
-        st.markdown("---")
-        st.header("⚠️ Top Suspicious")
-        top = chart_gen.create_top_suspicious_table(df, 15)
-        if not top.empty:
-            st.dataframe(top.style.background_gradient(subset=['Fraud_Probability'], cmap='Reds'), height=400)
+    st.markdown("---")
+    st.header("💰 Amount Distribution")
+    if 'Amount' in df.columns:
+        st.plotly_chart(chart_gen.create_histogram(df, 'Amount', "Amount"), use_container_width=True)
+    
+    st.markdown("---")
+    st.header("⚠️ Top Suspicious")
+    top = chart_gen.create_top_suspicious_table(df, 15)
+    if not top.empty:
+        st.dataframe(top.style.background_gradient(subset=['Fraud_Probability'], cmap='Reds'), height=400)
     
     st.markdown("---")
     csv = df.to_csv(index=False).encode('utf-8')
