@@ -59,23 +59,42 @@ The project uses **XGBoost (Extreme Gradient Boosting)**, a powerful ensemble le
 # 📂 Project Structure
 
 ```
-fraud-detection-system/
+credit_card_fraud_system/
 │
-├── app.py                     # Streamlit web application
-├── requirements.txt          # Project dependencies
+├── app.py                          # Streamlit entry point
+├── requirements.txt                # Python dependencies
+├── README.md                       # Project documentation
+├── ARCHITECTURE.md                 # System architecture explanation
+├── DEPLOYMENT.md                   # Deployment instructions
+├── TODO.md                         # Task tracker / improvements
 │
-├── models/
-│   ├── xgb_model.pkl         # Trained XGBoost model
-│   ├── scaler.pkl            # Feature scaler
-│   └── feature_columns.pkl   # Feature list used during training
+├── models/                         # Serialized ML artifacts
+│   ├── xgb_model.pkl
+│   ├── scaler.pkl
+│   └── feature_columns.pkl
 │
-├── src/
-│   ├── config.py             # Configuration variables
-│   ├── preprocessing.py      # Data preprocessing functions
-│   ├── train_model.py        # Model training script
-│   └── predict.py            # Prediction pipeline
+├── fraud_detection_system/         # Core application package
+│   ├── __init__.py
+│   │
+│   ├── ml_pipeline/                # Machine learning pipeline
+│   │   ├── __init__.py
+│   │   ├── data_preprocessing.py   # Data cleaning & validation
+│   │   ├── feature_engineering.py  # Feature transformations
+│   │   ├── model_training.py       # XGBoost training + SMOTE
+│   │   ├── model_evaluation.py     # Metrics & evaluation
+│   │   └── prediction_pipeline.py  # Inference logic
+│   │
+│   ├── utils/                      # Utility helpers
+│   │   ├── __init__.py
+│   │   ├── constants.py            # App configuration
+│   │   ├── file_handler.py         # File upload validation
+│   │   └── chart_generator.py      # Charts for dashboard
+│   │
+│   └── data/
+│       └── sample_transaction.csv  # Example dataset for testing
 │
-└── README.md
+└── notebooks/                      # Optional: experimentation
+    └── model_training.ipynb
 ```
 
 ---
@@ -176,6 +195,9 @@ This project is licensed under the **MIT License**.
 # 👨‍💻 Author
 
 **Ashish Ghodke**
+**Sarika Tayde**
+**Gayatri Ramne**
+**Sarthak Choube**
 
 B.Sc. Data Science
 Dr. Babasaheb Ambedkar Marathwada University
@@ -186,3 +208,4 @@ https://github.com/Ashish-ghodke
 ---
 
 ⭐ If you find this project helpful, please consider giving it a **star on GitHub**.
+
