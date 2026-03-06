@@ -45,6 +45,16 @@ st.markdown("""
     .main { background-color: #f5f5f5; }
     .stButton>button { width: 100%; border-radius: 5px; padding: 10px; }
     .stMetric { background-color: white; padding: 10px; border-radius: 5px; }
+
+    /* Fix uploader size text */
+    [data-testid="stFileUploaderDropzone"] small {
+        visibility: hidden;
+    }
+    [data-testid="stFileUploaderDropzone"] small:after {
+        content: "Limit 50MB per file • CSV, XLSX, XLS";
+        visibility: visible;
+        display: block;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -501,4 +511,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
