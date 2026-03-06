@@ -355,7 +355,7 @@ def show_home_page():
 def show_upload_page():
     st.title("📤 Upload & Analyze")
     
-    uploaded_file = st.file_uploader("Choose CSV or Excel file", type=['csv', 'xlsx', 'xls'])
+    uploaded_file = st.file_uploader("Choose CSV or Excel file (Max 50MB per file)", type=['csv', 'xlsx', 'xls'])
     
     if uploaded_file:
         st.markdown(f"**File:** {uploaded_file.name} | **Size:** {uploaded_file.size/1024:.1f} KB")
@@ -501,3 +501,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
