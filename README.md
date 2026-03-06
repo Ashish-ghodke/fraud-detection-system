@@ -1,257 +1,188 @@
-# 🔒 Credit Card Fraud Detection System
+# 💳 Credit Card Fraud Detection System
 
-![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)
-![Streamlit](https://img.shields.io/badge/Streamlit-1.24+-red.svg)
-![XGBoost](https://img.shields.io/badge/XGBoost-1.7+-green.svg)
-![License](https://img.shields.io/badge/License-MIT-yellow.svg)
+A **Machine Learning based web application** that detects fraudulent credit card transactions in real-time using an **XGBoost classification model**. The system processes transaction data, performs preprocessing and feature scaling, and predicts whether a transaction is **fraudulent or legitimate** through an interactive web interface.
 
-A production-level web-based Credit Card Fraud Detection System using XGBoost and SMOTE for handling imbalanced datasets.
+This project demonstrates a **complete end-to-end ML pipeline**, including data preprocessing, model training, model serialization, and real-time prediction through a web application.
 
 ---
 
-## 📋 Table of Contents
+# 📌 Project Overview
 
-- [Overview](#overview)
-- [Features](#features)
-- [Technology Stack](#technology-stack)
-- [Project Structure](#project-structure)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Dataset Format](#dataset-format)
-- [Dashboard](#dashboard)
-- [Deployment](#deployment)
-- [Model Details](#model-details)
-- [Contributing](#contributing)
-- [License](#license)
+Credit card fraud is a critical problem in the financial industry. Detecting fraudulent transactions quickly helps financial institutions reduce losses and improve customer trust.
+
+This project aims to build an intelligent fraud detection system that:
+
+* Uses machine learning to identify suspicious transactions
+* Handles **highly imbalanced datasets**
+* Provides **real-time predictions through a web interface**
+* Demonstrates a **production-style ML workflow**
 
 ---
 
-## Overview
+# 🚀 Features
 
-This system provides a complete end-to-end solution for detecting credit card fraud using machine learning. It features:
-
-- **User-friendly Web Interface**: Built with Streamlit
-- **Advanced ML Pipeline**: XGBoost with SMOTE for imbalanced data handling
-- **Interactive Dashboard**: Real-time visualizations with Plotly
-- **Production-Ready**: Error handling, validation, and deployment-safe code
-
----
-
-## Features
-
-### 🔍 Fraud Detection
-- Automatic data validation and preprocessing
-- Feature engineering (time, amount, interaction features)
-- XGBoost model with SMOTE for class imbalance
-- Fraud probability scoring
-
-### 📊 Interactive Dashboard
-- Total transaction metrics
-- Fraud vs Non-Fraud distribution
-- Transaction amount histograms
-- Top suspicious transactions table
-- Risk level categorization
-
-### 🛡️ Data Security
-- All processing done locally
-- No data sent to external servers
-- Secure file handling
+* Fraud detection using **XGBoost**
+* Real-time prediction interface
+* Data preprocessing and feature scaling
+* Modular Python project structure
+* Trained model loading for fast inference
+* Interactive UI built with Streamlit
 
 ---
 
-## Technology Stack
+# 🧠 Machine Learning Model
 
-| Component | Technology |
-|-----------|------------|
-| Frontend | Streamlit |
-| Backend | Python 3.9+ |
-| ML Model | XGBoost |
-| Data Processing | Pandas, NumPy |
-| Preprocessing | Scikit-learn |
-| Imbalance Handling | SMOTE |
-| Visualization | Plotly |
-| Model Serialization | Joblib |
-
----
-
-## Project Structure
-
-```
-credit_card_fraud_system/
-├── fraud_detection_system/
-│   ├── __init__.py
-│   ├── app.py                    # Main Streamlit application
-│   ├── ml_pipeline/
-│   │   ├── __init__.py
-│   │   ├── data_preprocessing.py # Data validation & cleaning
-│   │   ├── feature_engineering.py # Feature transformations
-│   │   ├── model_training.py     # XGBoost training with SMOTE
-│   │   ├── model_evaluation.py    # Model metrics
-│   │   └── prediction_pipeline.py # Inference pipeline
-│   ├── utils/
-│   │   ├── __init__.py
-│   │   ├── constants.py          # App constants
-│   │   ├── file_handler.py       # File upload & validation
-│   │   └── chart_generator.py    # Dashboard charts
-│   └── data/
-│       └── sample_transaction.csv
-├── requirements.txt               # Python dependencies
-├── README.md                      # This file
-├── ARCHITECTURE.md                # System architecture
-├── DEPLOYMENT.md                 # Deployment guide
-└── TODO.md                        # Task tracker
-```
-
----
-
-## Installation
-
-### Prerequisites
-
-- Python 3.9 or higher
-- pip package manager
-
-### Step 1: Clone the Repository
-
-```
-bash
-git clone https://github.com/YOUR_USERNAME/credit_card_fraud_system.git
-cd credit_card_fraud_system
-```
-
-### Step 2: Create Virtual Environment (Recommended)
-
-```
-bash
-# Windows
-python -m venv venv
-venv\Scripts\activate
-
-# Mac/Linux
-python -m venv venv
-source venv/bin/activate
-```
-
-### Step 3: Install Dependencies
-
-```
-bash
-pip install -r requirements.txt
-```
-
----
-
-## Usage
-
-### Running Locally
-
-```
-bash
-streamlit run fraud_detection_system/app.py
-```
-
-The application will open in your browser at `http://localhost:8501`.
-
-### Using the Application
-
-1. **Home Page**: Learn about the project, XGBoost, and SMOTE
-2. **Upload**: Upload your CSV or Excel file with transaction data
-3. **Analyze**: Click "Upload and Analyze" to process the data
-4. **Dashboard**: View interactive charts and fraud predictions
-5. **Download**: Export results as CSV
-
----
-
-## Dataset Format
-
-Your dataset should contain:
-
-| Column | Description | Required |
-|--------|-------------|----------|
-| Time | Seconds from first transaction | Yes |
-| V1-V28 | Anonymized PCA features | Yes |
-| Amount | Transaction amount | Yes |
-| Class | 0=Normal, 1=Fraud | For training |
-
-### Example CSV Format:
-
-```
-csv
-Time,V1,V2,V3,...,V28,Amount,Class
-0.0,-1.36,-0.07,2.54,...,0.17,149.62,0
-1.0,-1.36,1.19,0.24,...,0.08,2.69,0
-```
-
----
-
-## Dashboard
-
-The dashboard provides:
-
-- 📈 **Metrics Cards**: Total transactions, fraud count, fraud percentage
-- 📊 **Bar Chart**: Fraud vs Non-Fraud transactions
-- 🥧 **Pie Chart**: Fraud distribution percentage
-- 📉 **Histogram**: Transaction amount distribution
-- ⚠️ **Top Suspicious**: Table of highest risk transactions
-
----
-
-## Deployment
-
-### Streamlit Cloud
-
-1. Push code to GitHub
-2. Visit [share.streamlit.io](https://share.streamlit.io)
-3. Connect your GitHub repository
-4. Deploy!
-
-See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed instructions.
-
----
-
-## Model Details
+The project uses **XGBoost (Extreme Gradient Boosting)**, a powerful ensemble learning algorithm widely used for structured data problems.
 
 ### Why XGBoost?
 
-- **Handles Imbalance**: Built-in `scale_pos_weight` parameter
-- **High Performance**: Fast training and prediction
-- **Regularization**: L1/L2 to prevent overfitting
-- **Missing Values**: Native handling
-- **Interpretability**: Feature importance scores
-
-### Why SMOTE?
-
-- **Synthetic Oversampling**: Creates new minority class samples
-- **Prevents Overfitting**: More diverse than simple duplication
-- **Improves Recall**: Better fraud detection
-
-### Model Performance
-
-The model is evaluated using:
-- ROC-AUC Score
-- Precision, Recall, F1-Score
-- Confusion Matrix
+* Excellent performance on tabular datasets
+* Handles **imbalanced classification problems**
+* Fast training and prediction
+* High accuracy and scalability
 
 ---
 
-## Contributing
+# 🛠 Technology Stack
 
-Contributions are welcome! Please feel free to submit a Pull Request.
-
----
-
-## License
-
-This project is licensed under the MIT License.
-
----
-
-## Acknowledgments
-
-- [Kaggle Credit Card Fraud Dataset](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud)
-- [XGBoost Documentation](https://xgboost.readthedocs.io/)
-- [Streamlit Documentation](https://docs.streamlit.io/)
+| Technology   | Purpose                        |
+| ------------ | ------------------------------ |
+| Python       | Core programming language      |
+| Pandas       | Data processing                |
+| NumPy        | Numerical computations         |
+| Scikit-learn | Data preprocessing & utilities |
+| XGBoost      | Machine learning model         |
+| Streamlit    | Web application interface      |
 
 ---
 
-**Built with ❤️ using XGBoost and Streamlit**
+# 📂 Project Structure
+
+```
+fraud-detection-system/
+│
+├── app.py                     # Streamlit web application
+├── requirements.txt          # Project dependencies
+│
+├── models/
+│   ├── xgb_model.pkl         # Trained XGBoost model
+│   ├── scaler.pkl            # Feature scaler
+│   └── feature_columns.pkl   # Feature list used during training
+│
+├── src/
+│   ├── config.py             # Configuration variables
+│   ├── preprocessing.py      # Data preprocessing functions
+│   ├── train_model.py        # Model training script
+│   └── predict.py            # Prediction pipeline
+│
+└── README.md
+```
+
+---
+
+# 🔄 System Architecture
+
+```
+User Input
+    ↓
+Streamlit Web Interface
+    ↓
+Data Preprocessing
+    ↓
+Feature Scaling
+    ↓
+XGBoost Model
+    ↓
+Fraud / Legitimate Prediction
+```
+
+---
+
+# 📊 Model Evaluation
+
+Fraud detection datasets are typically **highly imbalanced**, so multiple evaluation metrics are used to assess performance.
+
+Common evaluation metrics include:
+
+* Accuracy
+* Precision
+* Recall
+* F1 Score
+* ROC-AUC Score
+
+These metrics help evaluate how well the model detects fraudulent transactions while minimizing false positives.
+
+---
+
+# ⚙️ Installation and Setup
+
+### 1. Clone the Repository
+
+```
+git clone https://github.com/Ashish-ghodke/fraud-detection-system.git
+cd fraud-detection-system
+```
+
+### 2. Install Dependencies
+
+```
+pip install -r requirements.txt
+```
+
+### 3. Run the Application
+
+```
+streamlit run app.py
+```
+
+The application will launch in your default browser.
+
+---
+
+# 🖥 Application Demo
+
+You can add screenshots of the application here.
+
+Example:
+
+* Transaction input interface
+* Fraud prediction output
+* System UI
+
+```
+(Add screenshots after uploading them to the repository)
+```
+
+---
+
+# 🔮 Future Improvements
+
+Possible enhancements for this project:
+
+* Deploy the application on a cloud platform
+* Create a REST API for model predictions
+* Implement real-time transaction streaming
+* Add advanced anomaly detection techniques
+* Improve feature engineering
+
+---
+
+# 📜 License
+
+This project is licensed under the **MIT License**.
+
+---
+
+# 👨‍💻 Author
+
+**Ashish Ghodke**
+
+B.Sc. Data Science
+Dr. Babasaheb Ambedkar Marathwada University
+
+GitHub:
+https://github.com/Ashish-ghodke
+
+---
+
+⭐ If you find this project helpful, please consider giving it a **star on GitHub**.
