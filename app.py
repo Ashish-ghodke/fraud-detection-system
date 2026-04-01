@@ -318,18 +318,7 @@ def show_home_page():
     - Generate a detailed dashboard
     """)
     
-    st.markdown("---")
-    st.header("🤖 Why XGBoost?")
-    st.markdown("""
-    1. **Handles Imbalanced Data**: Built-in scale_pos_weight handles class imbalance.
-    2. **High Performance**: Fast and accurate.
-    3. **Regularization**: Prevents overfitting.
-    4. **Missing Values**: Native handling.
-    """)
-    
-    st.header("⚖️ Why SMOTE?")
-    st.markdown("SMOTE creates synthetic minority samples to handle imbalanced data.")
-    
+
     st.header("📊 Dataset Format")
     st.markdown("""
     | Column | Description |
